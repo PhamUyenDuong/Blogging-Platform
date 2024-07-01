@@ -1,11 +1,28 @@
 Rails.application.routes.draw do
+  # Devise routes for user authentication
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Root route pointing to posts#index
+  root "posts#index"
+
+  resources :users, only: [:show]
+
+  # Routes for users including following and followers actions
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+
+  # Nested routes for posts with likes nested under posts
+  resources :posts do
+    resources :likes, only: [:create, :destroy]
+    resources :comments, only: [:create, :destroy]
+  end
+
+  # Routes for creating and destroying relationships
+  resources :relationships, only: [:create, :destroy]
+
+  # Health check route to verify app status
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

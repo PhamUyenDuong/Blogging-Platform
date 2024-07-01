@@ -67,3 +67,5 @@ group :test do
 end
 
 gem 'devise', '~> 4.8'
+
+gem 'guard', '~>2.13.0'
