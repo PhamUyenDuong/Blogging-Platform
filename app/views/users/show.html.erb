@@ -2,6 +2,10 @@
 <%= render 'follow_form' if user_signed_in? && @user != current_user %>
 
 <h1><%= @user.email %>'s Profile</h1>
+<div>
+  <%= link_to "Following", following_user_path(@user) %> |
+  <%= link_to "Followers", followers_user_path(@user) %>
+</div>
 
 <!-- Display user profile details here, e.g., name, bio, profile picture, etc. -->
 <%= link_to 'Back', root_path %>

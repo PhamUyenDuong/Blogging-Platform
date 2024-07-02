@@ -1,6 +1,7 @@
 # app/controllers/users_controller.rb
 class UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:index, :show, :following, :followers]
+  before_action :set_user, only: [:show, :following, :followers]
 
   def index
     @users = User.where.not(id: current_user.id)
@@ -11,15 +12,21 @@ class UsersController < ApplicationController
     # Additional logic as needed
   end
 
-  def send_follow_request
-    @user = User.find(params[:id])
-    current_user.follow(@user)
-    redirect_to users_path, notice: 'Follow request sent!'
+  def following
+    @title = "Following"
+    @users = @user.following
+    render 'show_follow'
   end
 
-  def accept_follow_request
+  def followers
+    @title = "Followers"
+    @users = @user.followers
+    render 'show_follow'
+  end
+
+  private
+
+  def set_user
     @user = User.find(params[:id])
-    current_user.accept_follow_request(@user)
-    redirect_to users_path, notice: 'Follow request accepted!'
   end
 end
