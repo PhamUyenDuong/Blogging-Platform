@@ -1,29 +1,24 @@
+# config/routes.rb
 Rails.application.routes.draw do
   # Devise routes for user authentication
-  devise_for :users do
-    get '/users/sign_out' => 'devise/sessions#destroy'
-  end
+  devise_for :users
 
   # Root route pointing to posts#index
   root "posts#index"
 
-  resources :users, only: [:show]
-
   # Routes for users including following and followers actions
-  resources :users do
+  resources :users, only: [:index, :show] do
     member do
       get :following, :followers
+      post :follow, to: 'relationships#create'
+      delete :unfollow, to: 'relationships#destroy'
     end
   end
-
-  # resources :posts do
-  #   resources :comments, only: [:create, :destroy]
-  # end
 
   # Nested routes for posts with likes nested under posts
   resources :posts do
     resources :likes, only: [:create, :destroy]
-    resources :comments, only: [:create, :destroy]
+    resources :comments, only: [:create, :update, :destroy]
   end
 
   # Routes for creating and destroying relationships
