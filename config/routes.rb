@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   # Devise routes for user authentication
-  devise_for :users
+  devise_for :users do
+    get '/users/sign_out' => 'devise/sessions#destroy'
+  end
 
   # Root route pointing to posts#index
   root "posts#index"
