@@ -1,9 +1,63 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# db/seeds.rb
+require 'faker'
+
+# Clear existing data
+User.destroy_all
+Post.destroy_all
+Comment.destroy_all
+Like.destroy_all
+Relationship.destroy_all
+
+# Create sample users
+users = []
+10.times do
+  users << User.create!(
+    email: Faker::Internet.email,
+    password: 'password',
+    password_confirmation: 'password'
+  )
+end
+
+# Create sample posts
+posts = []
+users.each do |user|
+  5.times do
+    posts << Post.create!(
+      content: Faker::Quote.famous_last_words,
+      user: user
+    )
+  end
+end
+
+# Create sample comments
+posts.each do |post|
+  3.times do
+    Comment.create!(
+      content: Faker::Movies::HarryPotter.quote,
+      user: users.sample,
+      post: post
+    )
+  end
+end
+
+# Create sample likes
+posts.each do |post|
+  users.sample(3).each do |user|
+    Like.create!(
+      user: user,
+      post: post
+    )
+  end
+end
+
+# Create sample relationships
+users.each do |user|
+  following = users.sample(3)
+  following.each do |followed|
+    unless user == followed || user.following?(followed)
+      user.follow(followed)
+    end
+  end
+end
+
+puts "Seed data created successfully!"

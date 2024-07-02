@@ -4,7 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :email, presence: true, uniqueness: true
-  
+  after_create :send_welcome_email
+
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :post
@@ -24,5 +25,11 @@ class User < ApplicationRecord
 
   def following?(other_user)
     following.include?(other_user)
+  end
+
+  private
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_now
   end
 end

@@ -66,6 +66,10 @@ group :test do
   gem "selenium-webdriver"
 end
 
+gem 'faker'
+
 gem 'devise', '~> 4.8'
 
 gem 'guard', '~>2.13.0'
+
+gem "letter_opener", group: :development
