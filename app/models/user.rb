@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :email, presence: true, uniqueness: true
-  after_create :send_welcome_email
+  # after_create :send_welcome_email
 
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy

@@ -15,13 +15,24 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  host: localhost
+  username: uyen
+  password: password
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: 5
 
 development:
   <<: *default
-  database: odinbook_development
+  # secret_key_base: "e3e247964da4d28ecd15adfa857b141b992b4ac49a8d6562e19b15d3c6ac10dbaa6494b24949109846e98ac746b72fd9e29d52ebda33c242541145de39ebaac9"
+  # adapter: postgresql
+  adapter: postgresql
+  database: odinbook_production
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
+  pool: 5
+  timeout: 5000
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -54,8 +65,10 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: odinbook_test
+  adapter: postgresql
+  database: odinbook_production
+  pool: 5
+  timeout: 5000
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,6 +92,10 @@ test:
 #
 production:
   <<: *default
-  database: odinbook_production
-  username: odinbook
-  password: <%= ENV["ODINBOOK_DATABASE_PASSWORD"] %>
+  # adapter: postgresql
+  host: <%= ENV['DB_HOST'] %>
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  pool: 5
+  timeout: 5000
