@@ -1,0 +1,19 @@
+<div class="profile">
+  <%= image_tag @user.profile.avatar.url if @user.profile.avatar.attached? %>
+  <h2><%= @user.name %></h2>
+  <p>Bio: <%= @user.profile.bio %></p>
+  <p>Location: <%= @user.profile.location %></p>
+
+  <h3>Posts</h3>
+  <% @user.posts.each do |post| %>
+    <div class="post">
+      <p><%= post.content %></p>
+      <p>Likes: <%= post.likes.count %></p>
+      <p>Comments:</p>
+      <% post.comments.each do |comment| %>
+        <p><%= comment.content %> - <%= comment.user.email %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<%= link_to 'Back', 'javascript:history.back()' %>

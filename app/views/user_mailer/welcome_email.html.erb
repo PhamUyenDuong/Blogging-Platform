@@ -1,0 +1,12 @@
+<!-- app/views/user_mailer/welcome_email.html.erb -->
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Welcome to Odinbook, <%= @user.email %>!</h1>
+    <p>
+      You have successfully signed up to Odinbook.
+      Click the link below to login:
+    </p>
+    <p><%= link_to 'Login', @url %></p>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+# Wait for PostgreSQL to be ready
+# wait-for-it.sh db:5432 --timeout=60 --strict -- echo "PostgreSQL is up - executing command"
+
+# If running the rails server then create or migrate existing database
+if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  ./bin/rails db:prepare
+fi
+
+exec "${@}"
