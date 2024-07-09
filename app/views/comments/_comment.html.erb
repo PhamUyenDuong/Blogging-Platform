@@ -1,7 +1,0 @@
-<!-- app/views/comments/_comment.html.erb -->
-<div class="comment">
-  <p><%= comment.content %> - <%= comment.user.email %></p>
-  <% if comment.user == current_user %>
-    <%= link_to 'Delete', post_comment_path(comment.post, comment), data: { turbo_method: :delete } %>
-  <% end %>
-</div>
